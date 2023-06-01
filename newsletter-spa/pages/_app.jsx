@@ -1,8 +1,9 @@
 import "../styles/main.scss";
+import MainAppLayout from "../layouts/MainAppLayout";
 
 function MyApp({ Component, pageProps }) {
-  // Implementation of a Per-page layout
   const getLayout = Component.getLayout || ((page) => page);
+
   return getLayout(<Component {...pageProps} />);
 }
 

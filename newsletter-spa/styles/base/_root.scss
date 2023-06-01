@@ -1,8 +1,11 @@
 @use "../abstracts/" as *;
 
 :root {
-  --primary-color: map-get($colors, primary);
-  --secondary-color: map-get($colors, secondary);
+  // Declare our primary and secondary color (They have no shades)
+  --primary-color: #{map-get($colors, primary)};
+  --secondary-color: #{map-get($colors, secondary)};
+
+  // Iterate over the shades of our neutral color
   @each $shade, $value in map-get($colors, neutral) {
     --neutral-#{$shade}: #{$value};
   }

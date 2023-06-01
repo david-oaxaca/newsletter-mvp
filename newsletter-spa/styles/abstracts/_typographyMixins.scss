@@ -1,0 +1,36 @@
+@use "_fontVariables" as *;
+
+@mixin title {
+  font-size: 5rem;
+  font-weight: map-get($fontWeights, "bold");
+}
+
+@mixin subTitle {
+  font-size: 3rem;
+  font-weight: map-get($fontWeights, "bold");
+}
+
+@mixin heading {
+  font-size: 2rem;
+  font-weight: map-get($fontWeights, "bold");
+}
+
+@mixin subHeading {
+  font-size: 1.75rem;
+  font-weight: map-get($fontWeights, "semibold");
+}
+
+@mixin bigText {
+  font-size: 1.5rem;
+  font-weight: map-get($fontWeights, "medium");
+}
+
+@mixin normalText {
+  font-size: 1.125rem;
+  font-weight: map-get($fontWeights, "regular");
+}
+
+@mixin smallText {
+  font-size: 1rem;
+  font-weight: map-get($fontWeights, "regular");
+}

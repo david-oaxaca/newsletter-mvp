@@ -1,9 +1,9 @@
-import MainAppLayout from "../layouts/MainAppLayout";
+import MainAppLayout from "../../layouts/MainAppLayout";
 
-export default function Home() {
+export default function Unsubscribe() {
   return (
     <div>
-      <p>Home page</p>
+      <p>Unsubscribe from topic ID</p>
     </div>
   );
 }

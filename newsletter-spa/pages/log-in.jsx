@@ -1,13 +1,13 @@
 import MainAppLayout from "../layouts/MainAppLayout";
 
-export default function Home() {
+export default function LogIn() {
   return (
     <div>
-      <p>Home page</p>
+      <p>Log In page</p>
     </div>
   );
 }
 
-Home.getLayout = function getLayout(page) {
+LogIn.getLayout = function getLayout(page) {
   return <MainAppLayout>{page}</MainAppLayout>;
 };

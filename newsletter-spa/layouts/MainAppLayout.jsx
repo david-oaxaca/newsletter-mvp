@@ -1,10 +1,12 @@
-import { Header } from "../components/Header/Header";
+import Header from "../components/Header/Header";
 
-export default function MainAppLayout({ children }) {
+const MainAppLayout = ({ children }) => {
   return (
     <>
       <Header />
       {children}
     </>
   );
-}
+};
+
+export default MainAppLayout;

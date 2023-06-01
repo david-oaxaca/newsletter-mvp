@@ -1,0 +1,38 @@
+@use "../abstracts" as *;
+
+.title {
+  @include subTitle;
+  color: var(--secondary-color);
+}
+
+.subtitle {
+  @include title;
+  color: var(--secondary-color);
+}
+
+.heading,
+h1 {
+  @include heading;
+  color: var(--secondary-color);
+}
+
+.subheading,
+h2 {
+  @include subHeading;
+  color: var(--secondary-color);
+}
+
+.text--big {
+  @include bigText;
+  color: var(--secondary-color);
+}
+
+.text--regular {
+  @include normalText;
+  color: var(--secondary-color);
+}
+
+.text--small {
+  @include smallText;
+  color: var(--secondary-color);
+}
