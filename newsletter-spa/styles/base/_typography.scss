@@ -36,3 +36,20 @@ h2 {
   @include smallText;
   color: var(--secondary-color);
 }
+
+.button-text {
+  @include bigText;
+  color: var(--primary-color);
+}
+
+.input-text {
+  @include normalText;
+  font-family: inherit;
+  color: var(--secondary-color);
+
+  &::placeholder {
+    @include normalText;
+    font-family: inherit;
+    color: var(--neutral-500);
+  }
+}
