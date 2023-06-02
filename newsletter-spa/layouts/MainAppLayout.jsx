@@ -1,10 +1,10 @@
-import Header from "../components/Header/Header";
+import NavBar from "../components/NavBar/NavBar";
 
 const MainAppLayout = ({ children }) => {
   return (
     <>
-      <Header />
-      {children}
+      <NavBar />
+      <main className="main-wrapper">{children}</main>
     </>
   );
 };

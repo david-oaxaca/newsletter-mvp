@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 
-const TextField = ({ label, placeholder, onChange }) => {
+const TextField = ({ label, type, placeholder, onChange }) => {
   return (
     <label className="label-wrapper">
       <span className="input-label text--big">{label}</span>
       <input
         className="textfield input-text"
-        type="text"
+        type={type}
         placeholder={placeholder}
         onChange={onChange}
       />
@@ -16,12 +16,14 @@ const TextField = ({ label, placeholder, onChange }) => {
 
 TextField.propTypes = {
   label: PropTypes.string,
+  type: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
 };
 
 TextField.defaultProps = {
   label: "label",
+  type: "text",
   placeholder: "input text",
 };
 

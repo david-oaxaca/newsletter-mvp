@@ -1,0 +1,18 @@
+@use "../abstracts/" as *;
+
+.sign-up-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .sign-up-link {
+    color: var(--neutral-600);
+    font-weight: map-get($fontWeights, "semibold");
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--neutral-500);
+    }
+  }
+}

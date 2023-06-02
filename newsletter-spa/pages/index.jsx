@@ -1,11 +1,7 @@
-import MainAppLayout from "../layouts/MainAppLayout";
 import LargeButton from "../components/Buttons/LargeButton";
-import UploadButton from "../components/Buttons/UploadButton";
 import TextField from "../components/Forms/TextField";
-import TextArea from "../components/Forms/TextArea";
-import FileUpload from "../components/Forms/FileUpload";
 
-export default function Home() {
+export default function LogIn() {
   const handleClick = () => {
     console.log("Hola mundo desde el boton");
   };
@@ -14,25 +10,29 @@ export default function Home() {
     console.log("Hola mundo desde text input");
   };
 
-  const handleTextareaChange = () => {
-    console.log("Hola mundo desde text area");
-  };
-
   return (
-    <div className="main-wrapper">
-      <FileUpload />
-      <TextArea
-        label={"Recipient List"}
-        placeholder={
-          "Add email separated by a comma. E.g. a@mail.com,b@mail.com"
-        }
-        onChange={handleTextareaChange}
+    <main className="main-wrapper">
+      <h1 className="title">Newsletter</h1>
+      <TextField
+        label="E-mail"
+        type="text"
+        placeholder="user@example.com"
+        onChange={handleTextfieldChange}
       />
-      <LargeButton onClick={handleClick}>Next</LargeButton>
-    </div>
+      <TextField
+        label="Password"
+        type="password"
+        placeholder="Introduce your password"
+        onChange={handleTextfieldChange}
+      />
+      <LargeButton onClick={handleClick}>Log In</LargeButton>
+
+      <div className="sign-up-section">
+        <h2>You don't have an account?</h2>
+        <a href="/sign-up" className="sign-up-link text--big">
+          Sign up
+        </a>
+      </div>
+    </main>
   );
 }
-
-Home.getLayout = function getLayout(page) {
-  return <MainAppLayout>{page}</MainAppLayout>;
-};

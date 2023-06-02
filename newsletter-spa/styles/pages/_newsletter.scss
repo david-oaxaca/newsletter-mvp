@@ -1,8 +1,9 @@
-.main-wrapper {
+@use "../abstracts/" as *;
+
+.newsletter-container {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin: 1rem auto;
+  justify-content: center;
 }

@@ -1,12 +1,16 @@
 @use "../abstracts" as *;
 
 .title {
-  @include subTitle;
+  @include title;
+  margin: 0;
+  line-height: 1.15;
   color: var(--secondary-color);
 }
 
 .subtitle {
-  @include title;
+  @include subTitle;
+  margin: 0;
+  line-height: 1.15;
   color: var(--secondary-color);
 }
 
