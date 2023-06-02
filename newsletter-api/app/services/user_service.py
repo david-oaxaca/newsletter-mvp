@@ -1,6 +1,6 @@
 from typing import Union
 from app.config.db import conn
-from app.models.user import User
+from app.models.user import UserModel as User
 from app.schemas.user_schema import userEntity, usersEntity
 from passlib.hash import sha256_crypt
 

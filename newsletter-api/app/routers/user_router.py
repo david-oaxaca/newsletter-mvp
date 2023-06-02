@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-from app.models.user import User
+from app.models.user import UserModel as User
 from app.services.user_service import UserService
 
 user_router = APIRouter()
