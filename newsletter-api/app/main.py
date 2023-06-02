@@ -1,22 +1,16 @@
-from typing import Union
 from fastapi import FastAPI
-from pydantic import BaseModel
 
-app = FastAPI()
+from app.routers.user_router import user_router
 
-class Item(BaseModel):
-    name: str 
-    price: float 
-    is_offer: Union[bool, None] = None
+from app.docs import tags_metadata
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+# Init of the app
+app = FastAPI(
+    title = "Newsletter REST API",
+    description= "REST API for Newsletter MVP",
+    version = "0.0.1",
+    openapi_tags=tags_metadata
+)
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+# Include routers
+app.include_router(user_router)
