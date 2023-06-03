@@ -4,4 +4,7 @@ tags_metadata = [{
 },{
     "name": "recipients_list",
     "description": "Recipients list routes to create and add emails to the recipients"
+},{
+    "name": "newsletter",
+    "description": "Newsletter routes to publish or unsubscribe from"
 }]

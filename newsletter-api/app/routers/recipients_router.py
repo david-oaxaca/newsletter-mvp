@@ -17,7 +17,7 @@ def get_recipients_list(email: str):
     if service_response.get("error", None):
         raise HTTPException(status_code=404, detail=service_response["error"])
     
-    return JSONResponse(status_code=201, content=service_response)
+    return JSONResponse(status_code=200, content=service_response)
 
 @recipients_router.post(
         "/{email}/recipients/create-list/", 

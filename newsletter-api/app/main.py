@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from app.routers.user_router import user_router
 from app.routers.recipients_router import recipients_router
+from app.routers.newsletter_router import newsletter_router
 
 from app.docs import tags_metadata
 
@@ -16,3 +17,4 @@ app = FastAPI(
 # Include routers
 app.include_router(user_router)
 app.include_router(recipients_router)
+app.include_router(newsletter_router)

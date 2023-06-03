@@ -9,12 +9,16 @@ class RecipientsListService():
 
     def get_recipients(self, email: str) -> recipients_list_entity:
         try:
-            recipient_list = conn.local.user.find_one(
+            document_query = conn.local.user.find_one(
                 {"email": email}, 
                 {"recipients_list": 1}
             )
 
-            return recipients_list_entity(recipient_list)
+            if document_query and "recipients_list" in document_query:
+                return recipients_list_entity(document_query)
+            else:
+                return {}
+
         except Exception as e:
             print(str(e))
             return {"error": "Recipients list wasn't found."}
@@ -36,7 +40,7 @@ class RecipientsListService():
                 raise Exception("User doesn't exists in the database")
 
             new_recipients = dict(recipients_list)
-            recipients = [{email: "all"} for email in new_recipients["recipients_list"]]
+            recipients = [(email, ["none"]) for email in new_recipients["recipients_list"]]
 
             successful_update = self.update_recipients_list(email, recipients)
 
@@ -59,7 +63,7 @@ class RecipientsListService():
                 {"recipients_list": 1}
             )
             cur_list = dict(query_obj)
-            cur_list["recipients_list"].append({new_recipient: "all"})
+            cur_list["recipients_list"].append((new_recipient, ["all"]))
 
             successful_update = self.update_recipients_list(email, cur_list["recipients_list"])
 
