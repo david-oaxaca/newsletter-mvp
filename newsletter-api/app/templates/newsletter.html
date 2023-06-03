@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" style="height: 100%; margin: 0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter</title>
+  </head>
+  <body
+    style="
+      display: table;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      font-family: Roboto, sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.02em;
+      color: #757577;
+    "
+  >
+    <header style="width: 100%; margin-top: 60px">
+      <div
+        style="
+          text-align: center;
+          margin: 0 auto;
+          width: 100%;
+          max-width: 90vw;
+          font-weight: 400;
+          margin-bottom: 80px;
+        "
+      >
+        <h1>{{title}}</h1>
+      </div>
+    </header>
+    <main>
+      <div
+        style="
+          text-align: justify;
+          margin: 0 auto;
+          width: 100%;
+          max-width: 90vw;
+          font-weight: 400;
+          margin-bottom: 80px;
+        "
+      >
+        <p>{{body}}</p>
+        <a
+          href="{{url}}"
+          target="_blank"
+          style="
+            width: fit-content;
+            height: auto;
+            text-decoration: none;
+            margin: 0 auto;
+            display: block;
+          "
+        >
+          <span
+            style="
+              background: #000000;
+              box-shadow: 0px 4px 15px rgba(156, 100, 239, 0.25);
+              border-radius: 27px;
+              color: #fff;
+              height: 60px;
+              width: 370px;
+              display: block;
+              font-weight: 600;
+              padding: 12px 19px;
+              box-sizing: border-box;
+              text-align: center;
+            "
+          >
+            <span style="vertical-align: middle">
+              Unsubscribe to newsletter
+            </span>
+          </span>
+        </a>
+      </div>
+    </main>
+    <footer
+      style="
+        font-size: 16px;
+        font-weight: 300;
+        text-align: center;
+        margin-bottom: 30px;
+      "
+    >
+      Si consideras que este es un error, solo ignora este mensaje.
+    </footer>
+  </body>
+</html>
