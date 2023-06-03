@@ -5,10 +5,10 @@ class RecipientsListModel(BaseModel):
     recipients_list: list
 
     class Config:
-        title= "Recipients list"
-        description= "List of recipients that will receive the newsletter"
+        title= "User data"
+        description= "Data of the user such as their e-mail"
         schema_extra= {
             "example": {
-                "recipient_list": ["tdwdavid76@gmail.com"],
+                "recipients_list": ["tdwdavid76@gmail.com", "tdwdavid@gmail.com"]
             }
         }

@@ -11,5 +11,6 @@ class UserModel(BaseModel):
         schema_extra= {
             "example": {
                 "email": "tdwdavid76@gmail.com",
+                "password": "password"
             }
         }
