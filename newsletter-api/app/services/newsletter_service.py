@@ -1,7 +1,7 @@
 import os
+from PIL import Image
+from io import BytesIO
 from pathlib import Path
-from fastapi import BackgroundTasks
-from typing import Union
 from app.config.db import conn
 from fastapi import File, UploadFile
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
@@ -50,19 +50,37 @@ class NewsletterService():
     def register_newletter(self) -> str:
         return "newsletter_id"
     
+    async def create_pdf_from_img(
+            self, 
+            image_file: UploadFile, 
+            original_name: str, 
+            pdf_name: str
+    ) -> list[UploadFile]:
+        
+        image_content = await image_file.read()
+        original_file = UploadFile(file=BytesIO(image_content), filename=original_name)
+
+        image = Image.open(BytesIO(image_content))
+        pdf_data = BytesIO()
+        image.save(pdf_data, format="PDF", resolution=100.0)
+        pdf_data.seek(0)
+        pdf_file = UploadFile(filename=pdf_name, file=pdf_data)
+
+        return [original_file, pdf_file]
+    
     async def send_email(
             self, 
             subject: str, 
             recipients: list, 
             body: dict, 
-            attachment: UploadFile
+            attachments: list[UploadFile]
     ):
         message = MessageSchema(
             subject=subject,
             recipients=recipients,
             template_body=body,
             subtype=MessageType.html,
-            attachments=[attachment]
+            attachments=attachments
         )
         
         fm = FastMail(self.conf)
@@ -79,10 +97,15 @@ class NewsletterService():
             file: UploadFile
     ) -> dict:
         try:
-            print(file_type)
-            # file_content = await file.read()
             newsletter_subscribed = self.retrieve_subscribed(sender, topics)
+            
             newsletter_id = self.register_newletter()
+            if file_type == 'image/png' or file_type == 'image/jpeg':
+                file_name = file.filename.split(".")[0]
+                attachments = await self.create_pdf_from_img(file, file.filename, file_name + ".pdf")
+                
+            else:
+                attachments = [file]
             
             for recipient in newsletter_subscribed:
                 unsubscribe_url = "/".join([self.domain, sender, recipient, newsletter_id])
@@ -91,11 +114,12 @@ class NewsletterService():
                     "body": info,
                     "url": unsubscribe_url
                 }
+
                 await self.send_email(
                     subject, 
                     [recipient], 
                     newsletter_info, 
-                    file
+                    attachments
                 )
             
             return {"message": "E-mail was send successfuly"}

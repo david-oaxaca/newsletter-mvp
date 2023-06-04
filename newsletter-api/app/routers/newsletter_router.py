@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 from app.services.newsletter_service import NewsletterService
-from app.models.newsletter import NewsletterModel as Newsletter
 from typing import Annotated
 
 newsletter_router = APIRouter()
