@@ -39,13 +39,16 @@ class NewsletterService():
             
             recipients = recipients_list_entity(document_query)
 
-            for recipient in recipients['recipients_list']:
-                if "none" in recipient[1]: 
-                    subscribed.append(recipient[0])
+            for recipient in recipients['recipients_list'].keys():
+                unsub_topics = recipients['recipients_list'][recipient]
+                if "none" in unsub_topics: 
+                    subscribed.append(recipient)
+                elif "all" in unsub_topics:
+                    continue
                 else:
-                    result = any(elem in recipient[1] for elem in topics)
-                    if not result and "all" not in recipient[1]:
-                        subscribed.append(recipient[0])
+                    unsub_match = any(elem in unsub_topics for elem in topics)
+                    if not unsub_match and "all" not in recipient[1]:
+                        subscribed.append(recipient)
 
             return subscribed
         except Exception as e:
@@ -54,7 +57,6 @@ class NewsletterService():
     def register_newletter(self, email: str, topics: list) -> str:
         try:
             newsletter_id = str(uuid.uuid4())
-            print(newsletter_id)
 
             document_query = conn.local.user.find_one(
                 {"email": email}, 
@@ -157,8 +159,7 @@ class NewsletterService():
 
             if file_type == 'image/png' or file_type == 'image/jpeg':
                 file_name = file.filename.split(".")[0]
-                attachments = await self.create_pdf_from_img(file, file.filename, file_name + ".pdf")
-                
+                attachments = await self.create_pdf_from_img(file, file.filename, file_name + ".pdf")   
             else:
                 attachments = [file]
             
