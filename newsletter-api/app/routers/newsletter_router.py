@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 from app.services.newsletter_service import NewsletterService
 from app.models.newsletter import NewsletterModel as Newsletter
+from typing import Annotated
 
 newsletter_router = APIRouter()
 newsletter_service = NewsletterService()
@@ -11,14 +12,23 @@ newsletter_service = NewsletterService()
         response_model=dict, 
         status_code=200, 
         tags=["newsletter"])
-async def publish_newsletter(sender: str, newsletter: Newsletter):
-    newsletter_info = dict(newsletter)
-    service_response = await newsletter_service.send_newsletter(
+async def publish_newsletter(
+    sender: str,
+    file: Annotated[UploadFile, File()],
+    subject: Annotated[str, Form()], 
+    title: Annotated[str, Form()], 
+    body: Annotated[str, Form()],
+    topics: Annotated[str, Form()]
+):
+    
+    service_response = await newsletter_service.publish_newsletter(
         sender,
-        newsletter_info["subject"],
-        newsletter_info["title"],
-        newsletter_info["body"],
-        newsletter_info["topics"]
+        subject,
+        title,
+        body,
+        topics.split(","),
+        file.content_type,
+        file,
     )
 
     if service_response.get("error", None):

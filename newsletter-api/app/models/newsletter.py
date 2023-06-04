@@ -1,11 +1,13 @@
 from typing import Optional
 from pydantic import BaseModel
+from fastapi import UploadFile
 
 class NewsletterModel(BaseModel):
     subject: str 
     title: str 
     body: str
     topics: list
+    file_type: str
 
     class Config:
         title= "Newsletter data"
@@ -15,6 +17,7 @@ class NewsletterModel(BaseModel):
                 "subject": "Subject of the newsletter",
                 "title": "Title of the newsletter",
                 "body": "Information of the newsletter",
-                "topics": ["Books", "Fantasy"]
+                "topics": ["Books", "Fantasy"],
+                "file_type": "pdf"
             }
         }

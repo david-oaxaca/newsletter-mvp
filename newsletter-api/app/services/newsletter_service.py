@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import BackgroundTasks
 from typing import Union
 from app.config.db import conn
+from fastapi import File, UploadFile
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from app.schemas.recipients_list_schema import recipients_list_entity
 from dotenv import load_dotenv
@@ -49,26 +50,37 @@ class NewsletterService():
     def register_newletter(self) -> str:
         return "newsletter_id"
     
-    async def send_newsletter_email(self, subject: str, recipients: list, body: dict):
+    async def send_email(
+            self, 
+            subject: str, 
+            recipients: list, 
+            body: dict, 
+            attachment: UploadFile
+    ):
         message = MessageSchema(
             subject=subject,
             recipients=recipients,
             template_body=body,
             subtype=MessageType.html,
+            attachments=[attachment]
         )
         
         fm = FastMail(self.conf)
         await fm.send_message(message, template_name='newsletter.html')
 
-    async def send_newsletter(
+    async def publish_newsletter(
             self, 
             sender: str, 
             subject: str, 
             title: str, 
             info: str, 
-            topics: list
+            topics: list,
+            file_type: str,
+            file: UploadFile
     ) -> dict:
-        try:    
+        try:
+            print(file_type)
+            # file_content = await file.read()
             newsletter_subscribed = self.retrieve_subscribed(sender, topics)
             newsletter_id = self.register_newletter()
             
@@ -79,9 +91,13 @@ class NewsletterService():
                     "body": info,
                     "url": unsubscribe_url
                 }
-                await self.send_newsletter_email(subject, [recipient], newsletter_info)
-
-
+                await self.send_email(
+                    subject, 
+                    [recipient], 
+                    newsletter_info, 
+                    file
+                )
+            
             return {"message": "E-mail was send successfuly"}
         except Exception as e:
             print(str(e))
