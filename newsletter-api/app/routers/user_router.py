@@ -12,9 +12,9 @@ def get_all_user():
     return users
 
 
-@user_router.get("/users/{email}", response_model=User, status_code=200, tags=["users"])
-def get_user(email: str):
-    service_response = user_service.get_user_by_email(email)
+@user_router.get("/users/{admin_email}", response_model=User, status_code=200, tags=["users"])
+def get_user(admin_email: str):
+    service_response = user_service.get_user_by_email(admin_email)
     print(type(service_response))
     if service_response.get("error", None):
         raise HTTPException(status_code=404, detail=service_response["error"])
@@ -32,9 +32,14 @@ def create_user(user: User):
     return JSONResponse(status_code=201, content=service_response)
 
 
-@user_router.put("/users/modify-user/{email}", response_model=User, status_code=200, tags=["users"])
-def modify_user(email: str, user: User):
-    service_response = user_service.update_user(email, dict(user))
+@user_router.put(
+        "/users/modify-user/{admin_email}", 
+        response_model=User, 
+        status_code=200, 
+        tags=["users"]
+)
+def modify_user(admin_email: str, user: User):
+    service_response = user_service.update_user(admin_email, dict(user))
 
     if service_response.get("error", None):
         raise HTTPException(status_code=404, detail=service_response["error"])    
@@ -42,9 +47,14 @@ def modify_user(email: str, user: User):
     return JSONResponse(status_code=200, content=service_response)
 
 
-@user_router.delete("/users/delete-user/{email}", response_model=dict, status_code=200, tags=["users"])
-def delete_user(email: str):
-    service_response = user_service.delete_user(email)
+@user_router.delete(
+        "/users/delete-user/{admin_email}", 
+        response_model=dict, 
+        status_code=200, 
+        tags=["users"]
+)
+def delete_user(admin_email: str):
+    service_response = user_service.delete_user(admin_email)
     
     if service_response.get("error", None):
         raise HTTPException(status_code=404, detail=service_response["error"])

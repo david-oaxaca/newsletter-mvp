@@ -7,12 +7,12 @@ newsletter_router = APIRouter()
 newsletter_service = NewsletterService()
 
 @newsletter_router.post(
-        "/{sender}/newsletter/publish/", 
+        "/{admin_email}/newsletter/publish/", 
         response_model=dict, 
         status_code=200, 
         tags=["newsletter"])
 async def publish_newsletter(
-    sender: str,
+    admin_email: str,
     file: Annotated[UploadFile, File()],
     subject: Annotated[str, Form()], 
     title: Annotated[str, Form()], 
@@ -20,7 +20,7 @@ async def publish_newsletter(
     topics: Annotated[str, Form()]
 ):
     service_response = await newsletter_service.publish_newsletter(
-        sender,
+        admin_email,
         subject,
         title,
         body,
@@ -35,12 +35,12 @@ async def publish_newsletter(
     return JSONResponse(status_code=200, content=service_response)
 
 @newsletter_router.get(
-        "/{sender}/newsletter/{newsletter_id}/get-topics/", 
+        "/{admin_email}/newsletter/{newsletter_id}/get-topics/", 
         response_model=dict, 
         status_code=200, 
         tags=["newsletter"])
-def retrieve_topics(sender: str, newsletter_id: str):
-    service_response = newsletter_service.retrieve_newletter(sender, newsletter_id)
+def retrieve_topics(admin_email: str, newsletter_id: str):
+    service_response = newsletter_service.retrieve_newletter(admin_email, newsletter_id)
 
     if service_response.get("error", None):
         raise HTTPException(status_code=404, detail=service_response["error"])

@@ -1,7 +1,7 @@
 from typing import Union
 from app.config.db import conn
 from app.schemas.user_schema import user_entity, users_entity
-from passlib.hash import sha256_crypt
+import hashlib
 
 class UserService():
     def __init__(self) -> None:
@@ -22,7 +22,7 @@ class UserService():
             if conn.local.user.find_one({"email": user["email"]}):
                 return {"message": "User already exists."}
             else:
-                user["password"] = sha256_crypt.encrypt(user["password"])
+                user["password"] = hashlib.md5(user["password"].encode()).hexdigest()
                 conn.local.user.insert_one(user).inserted_id
                 return {"message": "User was created successfuly."}
         except Exception as e:
