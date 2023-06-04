@@ -1,4 +1,5 @@
 import os
+import uuid
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
@@ -28,45 +29,96 @@ class NewsletterService():
         self.domain = os.getenv('DOMAIN')
 
     def retrieve_subscribed(self, email: str, topics: list) -> list:
-        document_query = conn.local.user.find_one(
-            {"email": email}, 
-            {"recipients_list": 1}
-        )
+        try:
+            document_query = conn.local.user.find_one(
+                {"email": email}, 
+                {"recipients_list": 1}
+            )
 
-        subscribed = []
-        
-        recipients = recipients_list_entity(document_query)
+            subscribed = []
+            
+            recipients = recipients_list_entity(document_query)
 
-        for recipient in recipients['recipients_list']:
-            if "none" in recipient[1]: 
-                subscribed.append(recipient[0])
-            else:
-                result = any(elem in recipient[1] for elem in topics)
-                if not result and "all" not in recipient[1]:
+            for recipient in recipients['recipients_list']:
+                if "none" in recipient[1]: 
                     subscribed.append(recipient[0])
+                else:
+                    result = any(elem in recipient[1] for elem in topics)
+                    if not result and "all" not in recipient[1]:
+                        subscribed.append(recipient[0])
 
-        return subscribed
+            return subscribed
+        except Exception as e:
+            print(str(e))
     
-    def register_newletter(self) -> str:
-        return "newsletter_id"
-    
+    def register_newletter(self, email: str, topics: list) -> str:
+        try:
+            newsletter_id = str(uuid.uuid4())
+            print(newsletter_id)
+
+            document_query = conn.local.user.find_one(
+                {"email": email}, 
+                {"newsletters": 1}
+            )
+
+            cur_newsletters = dict(document_query)
+
+            if cur_newsletters.get("newsletters", None) == None:
+                newsletter_dict = {
+                    "newsletters": {
+                        newsletter_id: topics
+                    }
+                }
+            else:
+                newsletter_dict = {
+                    "newsletters": cur_newsletters["newsletters"]
+                }
+                newsletter_dict["newsletters"][newsletter_id] = topics
+
+            filter_query = {"email": email}
+            update_query = {"$set": newsletter_dict}
+            conn.local.user.find_one_and_update(filter_query, update_query)
+            
+            return newsletter_id
+        except Exception as e:
+            print(str(e))
+
+    def retrieve_newletter(self, email: str, newsletter_id: str) -> dict:
+        try:
+            document_query = conn.local.user.find_one(
+                {"email": email}, 
+                {"newsletters": 1}
+            )
+
+            cur_newsletters = dict(document_query)
+
+            response = {
+                "message": "Topics retrieved successfuly",
+                "topics": cur_newsletters["newsletters"][newsletter_id]
+            }
+            return response
+        except Exception as e:
+            print(str(e))
+
     async def create_pdf_from_img(
             self, 
             image_file: UploadFile, 
             original_name: str, 
             pdf_name: str
     ) -> list[UploadFile]:
-        
-        image_content = await image_file.read()
-        original_file = UploadFile(file=BytesIO(image_content), filename=original_name)
+        try:
+            image_content = await image_file.read()
+            original_file = UploadFile(file=BytesIO(image_content), filename=original_name)
 
-        image = Image.open(BytesIO(image_content))
-        pdf_data = BytesIO()
-        image.save(pdf_data, format="PDF", resolution=100.0)
-        pdf_data.seek(0)
-        pdf_file = UploadFile(filename=pdf_name, file=pdf_data)
+            image = Image.open(BytesIO(image_content))
+            pdf_data = BytesIO()
+            image.save(pdf_data, format="PDF", resolution=100.0)
+            pdf_data.seek(0)
+            pdf_file = UploadFile(filename=pdf_name, file=pdf_data)
 
-        return [original_file, pdf_file]
+            return [original_file, pdf_file]
+        except Exception as e:
+            print(str(e))
     
     async def send_email(
             self, 
@@ -75,16 +127,19 @@ class NewsletterService():
             body: dict, 
             attachments: list[UploadFile]
     ):
-        message = MessageSchema(
-            subject=subject,
-            recipients=recipients,
-            template_body=body,
-            subtype=MessageType.html,
-            attachments=attachments
-        )
-        
-        fm = FastMail(self.conf)
-        await fm.send_message(message, template_name='newsletter.html')
+        try:
+            message = MessageSchema(
+                subject=subject,
+                recipients=recipients,
+                template_body=body,
+                subtype=MessageType.html,
+                attachments=attachments
+            )
+            
+            fm = FastMail(self.conf)
+            await fm.send_message(message, template_name='newsletter.html')
+        except Exception as e:
+            print(str(e))
 
     async def publish_newsletter(
             self, 
@@ -98,8 +153,8 @@ class NewsletterService():
     ) -> dict:
         try:
             newsletter_subscribed = self.retrieve_subscribed(sender, topics)
-            
-            newsletter_id = self.register_newletter()
+            newsletter_id = self.register_newletter(sender, topics)
+
             if file_type == 'image/png' or file_type == 'image/jpeg':
                 file_name = file.filename.split(".")[0]
                 attachments = await self.create_pdf_from_img(file, file.filename, file_name + ".pdf")

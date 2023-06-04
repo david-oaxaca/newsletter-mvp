@@ -19,7 +19,6 @@ async def publish_newsletter(
     body: Annotated[str, Form()],
     topics: Annotated[str, Form()]
 ):
-    
     service_response = await newsletter_service.publish_newsletter(
         sender,
         subject,
@@ -29,6 +28,19 @@ async def publish_newsletter(
         file.content_type,
         file,
     )
+
+    if service_response.get("error", None):
+        raise HTTPException(status_code=404, detail=service_response["error"])
+    
+    return JSONResponse(status_code=200, content=service_response)
+
+@newsletter_router.get(
+        "/{sender}/newsletter/{newsletter_id}/get-topics/", 
+        response_model=dict, 
+        status_code=200, 
+        tags=["newsletter"])
+def retrieve_topics(sender: str, newsletter_id: str):
+    service_response = newsletter_service.retrieve_newletter(sender, newsletter_id)
 
     if service_response.get("error", None):
         raise HTTPException(status_code=404, detail=service_response["error"])

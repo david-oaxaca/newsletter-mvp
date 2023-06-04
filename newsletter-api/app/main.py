@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.routers.user_router import user_router
-from app.routers.recipients_router import recipients_router
+from app.routers.recipients_list_router import recipients_router
 from app.routers.newsletter_router import newsletter_router
 
 from app.docs import tags_metadata

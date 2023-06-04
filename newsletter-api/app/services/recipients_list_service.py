@@ -28,7 +28,6 @@ class RecipientsListService():
             filter_query = {"email": email}
             update_query = {"$set": {"recipients_list": recipients}}
             conn.local.user.find_one_and_update(filter_query, update_query)
-
             return True
         except Exception as e:
             print(str(e))
@@ -58,11 +57,11 @@ class RecipientsListService():
             if not conn.local.user.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
             
-            query_obj = conn.local.user.find_one(
+            document_query = conn.local.user.find_one(
                 {"email": email}, 
                 {"recipients_list": 1}
             )
-            cur_list = dict(query_obj)
+            cur_list = dict(document_query)
             cur_list["recipients_list"].append((new_recipient, ["all"]))
 
             successful_update = self.update_recipients_list(email, cur_list["recipients_list"])
@@ -74,3 +73,39 @@ class RecipientsListService():
         except Exception as e:
             print(str(e))
             return {"error": "Recipients lists couldn't be created."}
+        
+    def update_recipient_unsubs(self, email: str, recipient_mail: str, topics: list) -> dict:
+        try:
+            document_query = conn.local.user.find_one(
+                {"email": email}, 
+                {"recipients_list": 1}
+            )
+
+            curr_subs = dict(document_query)
+
+            for recipient in curr_subs["recipients_list"]:
+                if recipient[0] == recipient_mail:
+                    if "all" in topics:
+                        recipient[1] = ["all"]
+                    if "none" in recipient[1]:
+                        recipient[1] = topics
+                        break
+                    elif recipient[1] == "all":
+                        break
+                    else:
+                        all_topics = set(recipient[1] + topics)
+                        recipient[1] = list(all_topics)
+                        break
+
+            filter_query = {"email": email}
+            update_query = {"$set": 
+                                {
+                                    "recipients_list": curr_subs["recipients_list"]
+                                }
+                            }
+            conn.local.user.find_one_and_update(filter_query, update_query)
+
+            return {"message": "The recipient was unsubscribed to the topics successfuly"}
+        except Exception as e:
+            print(str(e))
+            return {"error": "Recipient couldn't be unsubscribed to the topics."}

@@ -33,7 +33,7 @@ class UserService():
         try:
             cur_user = dict(user)
 
-            if not conn.local.user.find_one({"email": cur_user["email"]}):
+            if not conn.local.user.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
             
             cur_user["password"] = sha256_crypt.encrypt(cur_user["password"])
