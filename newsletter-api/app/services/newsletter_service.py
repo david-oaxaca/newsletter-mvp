@@ -102,17 +102,15 @@ class NewsletterService():
         except Exception as e:
             print(str(e))
 
-    async def create_pdf_from_img(
+    async def create_pdf_and_img(
             self, 
-            image_file: UploadFile, 
+            image_bytes: bytes, 
             original_name: str, 
             pdf_name: str
     ) -> list[UploadFile]:
         try:
-            image_content = await image_file.read()
-            original_file = UploadFile(file=BytesIO(image_content), filename=original_name)
-
-            image = Image.open(BytesIO(image_content))
+            original_file = UploadFile(file=BytesIO(image_bytes), filename=original_name)
+            image = Image.open(BytesIO(image_bytes))
             pdf_data = BytesIO()
             image.save(pdf_data, format="PDF", resolution=100.0)
             pdf_data.seek(0)
@@ -121,6 +119,9 @@ class NewsletterService():
             return [original_file, pdf_file]
         except Exception as e:
             print(str(e))
+
+    async def create_pdf(self, pdf_bytes, original_name) -> UploadFile:
+        return UploadFile(file=BytesIO(pdf_bytes), filename=original_name) 
     
     async def send_email(
             self, 
@@ -156,22 +157,31 @@ class NewsletterService():
         try:
             newsletter_subscribed = self.retrieve_subscribed(sender, topics)
             newsletter_id = self.register_newletter(sender, topics)
-
-            if file_type == 'image/png' or file_type == 'image/jpeg':
-                file_name = file.filename.split(".")[0]
-                attachments = await self.create_pdf_from_img(file, file.filename, file_name + ".pdf")   
-            else:
-                attachments = [file]
-            
-            print("Attachment list created")
+            file_bytes = await file.read()
 
             for recipient in newsletter_subscribed:
-                unsubscribe_url = "/".join([self.domain, sender, recipient, newsletter_id])
+                unsubscribe_url = "/".join([
+                    self.domain, 
+                    "unsubscribe", 
+                    sender, 
+                    recipient, 
+                    newsletter_id
+                ])
                 newsletter_info = {
                     "title": title,
                     "body": info,
                     "url": unsubscribe_url
                 }
+
+                if file_type == 'image/png' or file_type == 'image/jpeg':
+                    file_name = file.filename.split(".")[0]
+                    attachments = await self.create_pdf_and_img(
+                        file_bytes, 
+                        file.filename, 
+                        file_name + ".pdf"
+                    )   
+                else:
+                    attachments = [await self.create_pdf(file_bytes, file.filename)]
 
                 print("Newsletter send")
 

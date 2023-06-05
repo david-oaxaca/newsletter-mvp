@@ -31,4 +31,15 @@ export default class RecipientsService {
       url: `http://localhost:8000/${mail}/recipients/add-recipient/${recipient}`,
     });
   }
+
+  static updateRecipientUnsubs(sender, recipient, data) {
+    return clientRequest({
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      url: `http://localhost:8000/${sender}/recipients/${recipient}/unsub`,
+      data: data,
+    });
+  }
 }
