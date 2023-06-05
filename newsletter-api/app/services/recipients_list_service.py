@@ -1,5 +1,5 @@
 from typing import Union
-from app.config.db import conn
+from app.config.db import collection
 from app.models.recipients_list import RecipientsListModel as RecipientsList
 from app.schemas.recipients_list_schema import recipients_list_entity
 
@@ -9,7 +9,7 @@ class RecipientsListService():
 
     def get_recipients(self, email: str) -> recipients_list_entity:
         try:
-            document_query = conn.local.user.find_one(
+            document_query = collection.find_one(
                 {"email": email}, 
                 {"recipients_list": 1}
             )
@@ -27,7 +27,7 @@ class RecipientsListService():
         try:
             filter_query = {"email": email}
             update_query = {"$set": {"recipients_list": recipients}}
-            conn.local.user.find_one_and_update(filter_query, update_query)
+            collection.find_one_and_update(filter_query, update_query)
             return True
         except Exception as e:
             print(str(e))
@@ -35,7 +35,7 @@ class RecipientsListService():
     
     def create_new_recipients_list(self, email: str, recipients_list: RecipientsList) -> dict:
         try:
-            if not conn.local.user.find_one({"email": email}):
+            if not collection.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
 
             new_recipients = dict(recipients_list)
@@ -54,10 +54,10 @@ class RecipientsListService():
         
     def add_new_recipient(self, email: str, new_recipient: str) -> dict:
         try:
-            if not conn.local.user.find_one({"email": email}):
+            if not collection.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
             
-            document_query = conn.local.user.find_one(
+            document_query = collection.find_one(
                 {"email": email}, 
                 {"recipients_list": 1}
             )
@@ -76,7 +76,7 @@ class RecipientsListService():
         
     def update_recipient_unsubs(self, email: str, recipient_mail: str, topics: list) -> dict:
         try:
-            document_query = conn.local.user.find_one(
+            document_query = collection.find_one(
                 {"email": email}, 
                 {"recipients_list": 1}
             )
@@ -101,7 +101,7 @@ class RecipientsListService():
                                 }
                             }
             
-            conn.local.user.find_one_and_update(filter_query, update_query)
+            collection.find_one_and_update(filter_query, update_query)
             return {"message": "The recipient was unsubscribed to the topics successfuly"}
         except Exception as e:
             print(str(e))

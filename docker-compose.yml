@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: newsletter-api
+    build:
+      context: ./newsletter-api
+      dockerfile: DockerFile
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+  db:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data:

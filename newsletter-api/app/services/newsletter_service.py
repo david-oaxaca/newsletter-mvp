@@ -3,7 +3,7 @@ import uuid
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
-from app.config.db import conn
+from app.config.db import collection
 from fastapi import File, UploadFile
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from app.schemas.recipients_list_schema import recipients_list_entity
@@ -30,7 +30,7 @@ class NewsletterService():
 
     def retrieve_subscribed(self, email: str, topics: list) -> list:
         try:
-            document_query = conn.local.user.find_one(
+            document_query = collection.find_one(
                 {"email": email}, 
                 {"recipients_list": 1}
             )
@@ -58,7 +58,7 @@ class NewsletterService():
         try:
             newsletter_id = str(uuid.uuid4())
 
-            document_query = conn.local.user.find_one(
+            document_query = collection.find_one(
                 {"email": email}, 
                 {"newsletters": 1}
             )
@@ -79,7 +79,7 @@ class NewsletterService():
 
             filter_query = {"email": email}
             update_query = {"$set": newsletter_dict}
-            conn.local.user.find_one_and_update(filter_query, update_query)
+            collection.find_one_and_update(filter_query, update_query)
             
             return newsletter_id
         except Exception as e:
@@ -87,7 +87,7 @@ class NewsletterService():
 
     def retrieve_newletter(self, email: str, newsletter_id: str) -> dict:
         try:
-            document_query = conn.local.user.find_one(
+            document_query = collection.find_one(
                 {"email": email}, 
                 {"newsletters": 1}
             )
