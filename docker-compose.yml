@@ -1,8 +1,15 @@
 version: "3.8"
 
 services:
+  spa:
+    build:
+      context: ./newsletter-spa
+      dockerfile: DockerFile
+    depends_on:
+      - api
+    ports:
+      - 3000:3000
   api:
-    container_name: newsletter-api
     build:
       context: ./newsletter-api
       dockerfile: DockerFile

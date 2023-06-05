@@ -24,6 +24,7 @@ class NewsletterService():
             MAIL_FROM_NAME="Newsletter",
             MAIL_STARTTLS=True,
             MAIL_SSL_TLS=False,
+            VALIDATE_CERTS=False,
             TEMPLATE_FOLDER= Path(CURR_DIR.parent, 'templates')
         )
         self.domain = os.getenv('DOMAIN')
