@@ -17,7 +17,7 @@ def get_user(admin_email: str):
     service_response = user_service.get_user_by_email(admin_email)
     print(type(service_response))
     if service_response.get("error", None):
-        raise HTTPException(status_code=404, detail=service_response["error"])
+        raise HTTPException(status_code=400, detail=service_response["error"])
     
     return JSONResponse(status_code=200, content=service_response)
 
@@ -30,6 +30,15 @@ def create_user(user: User):
         raise HTTPException(status_code=400, detail=service_response["error"])   
     
     return JSONResponse(status_code=201, content=service_response)
+
+@user_router.post("/users/login", response_model=dict, status_code=200, tags=["users"])
+def login(user: User):
+    service_response = user_service.login(dict(user))
+
+    if service_response.get("error", None):
+        raise HTTPException(status_code=400, detail=service_response["error"])   
+    
+    return JSONResponse(status_code=200, content=service_response)
 
 
 @user_router.put(

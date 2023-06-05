@@ -4,7 +4,7 @@ export default function Unsubscribe() {
       <h1 className="title">Newsletter</h1>
       <div className="unsubscribe-message">
         <h2 className="subtitle">
-          You've been unsubscribed from the selected topics.
+          You&apos;ve been unsubscribed from the selected topics.
         </h2>
       </div>
     </main>

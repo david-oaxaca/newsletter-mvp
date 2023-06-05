@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers.user_router import user_router
 from app.routers.recipients_list_router import recipients_router
@@ -12,6 +13,15 @@ app = FastAPI(
     description= "REST API for Newsletter MVP",
     version = "0.0.1",
     openapi_tags=tags_metadata
+)
+
+# Include Middleware such as CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include routers

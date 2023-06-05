@@ -31,13 +31,13 @@ class UserService():
     
     def update_user(self, email:str, user: dict) -> dict:
         try:
-            cur_user = dict(user)
+            curr_user = dict(user)
 
             if not conn.local.user.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
             
-            cur_user["password"] = sha256_crypt.encrypt(cur_user["password"])
-            conn.local.user.find_one_and_update({"email": email}, {"$set": cur_user})
+            curr_user["password"] = hashlib.md5(curr_user["password"].encode()).hexdigest()
+            conn.local.user.find_one_and_update({"email": email}, {"$set": curr_user})
             return {"message": "User was updated successfuly."}
         except Exception as e:
             print(str(e))
@@ -50,5 +50,19 @@ class UserService():
         except Exception as e:
             print(str(e))
             return {"error": "User doesn't exists."}
+        
+    def login(self, user: dict) -> dict:
+        try:
+            document_query = conn.local.user.find_one({"email": user["email"]})
+            if document_query["password"] == hashlib.md5(user["password"].encode()).hexdigest():
+                return {
+                    "message": "User logged in successfuly.",
+                    "user_mail": user["email"]
+                }
+            else:
+                raise Exception("Passwords doesn't match")
+        except Exception as e:
+            print(str(e))
+            return {"error": "Log In failed."}
     
     
