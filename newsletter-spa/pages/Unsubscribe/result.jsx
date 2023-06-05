@@ -4,7 +4,7 @@ export default function Unsubscribe() {
   return (
     <>
       <Head>
-        <title>Log In</title>
+        <title>Newsletter - Unsubscribe</title>
       </Head>
       <main className="main-wrapper">
         <h1 className="title">Newsletter</h1>

@@ -58,7 +58,7 @@ export default function Unsubscribe() {
   return (
     <>
       <Head>
-        <title>Unsubscribe</title>
+        <title>Newsletter - Unsubscribe</title>
       </Head>
       <main className="main-wrapper">
         <h1 className="title">Newsletter</h1>
