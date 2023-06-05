@@ -7,7 +7,7 @@ export default class NewsletterService {
       headers: {
         "Content-Type": "multipar/form-data",
       },
-      url: `http://localhost:8000/${mail}/newsletter/publish/`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/${mail}/newsletter/publish/`,
       data: data,
     });
   }
@@ -18,7 +18,7 @@ export default class NewsletterService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: `http://localhost:8000/${sender}/newsletter/${newsletter_id}/get-topics`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/${sender}/newsletter/${newsletter_id}/get-topics`,
     });
   }
 }

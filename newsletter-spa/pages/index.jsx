@@ -5,6 +5,7 @@ import UserService from "../fetchers/UserService";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Cookies from "universal-cookie";
+import Head from "next/head";
 
 export default function LogIn() {
   const usernameRef = useRef(null);
@@ -34,30 +35,35 @@ export default function LogIn() {
   };
 
   return (
-    <main className="main-wrapper">
-      <h1 className="title">Newsletter</h1>
-      <TextField
-        label="E-mail"
-        type="text"
-        placeholder="user@example.com"
-        myRef={usernameRef}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        placeholder="Introduce your password"
-        myRef={passwordRef}
-      />
-      <LargeButton type={"button"} onClick={handleClick}>
-        Log In
-      </LargeButton>
+    <>
+      <Head>
+        <title>Log In</title>
+      </Head>
+      <main className="main-wrapper">
+        <h1 className="title">Newsletter</h1>
+        <TextField
+          label="E-mail"
+          type="text"
+          placeholder="user@example.com"
+          myRef={usernameRef}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          placeholder="Introduce your password"
+          myRef={passwordRef}
+        />
+        <LargeButton type={"button"} onClick={handleClick}>
+          Log In
+        </LargeButton>
 
-      <div className="sign-up-section">
-        <h2>You don&apos;t have an account?</h2>
-        <Link href="/sign-up" className="sign-up-link text--big">
-          Sign up
-        </Link>
-      </div>
-    </main>
+        <div className="sign-up-section">
+          <h2>You don&apos;t have an account?</h2>
+          <Link href="/sign-up" className="sign-up-link text--big">
+            Sign up
+          </Link>
+        </div>
+      </main>
+    </>
   );
 }

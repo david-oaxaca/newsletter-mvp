@@ -7,7 +7,7 @@ export default class UserService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: "http://localhost:8000/users/create-user",
+      url: `${process.env.NEXT_PUBLIC_API_URL}/users/create-user`,
       data: data,
     });
   }
@@ -18,7 +18,7 @@ export default class UserService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: "http://localhost:8000/users/login",
+      url: `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
       data: data,
     });
   }

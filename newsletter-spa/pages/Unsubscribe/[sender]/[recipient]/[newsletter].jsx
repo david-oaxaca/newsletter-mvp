@@ -4,6 +4,7 @@ import LargeButton from "../../../../components/Buttons/LargeButton";
 import TextArea from "../../../../components/Forms/TextArea";
 import RecipientsService from "../../../../fetchers/RecipientsService";
 import NewsletterService from "../../../../fetchers/NewsletterService";
+import Head from "next/head";
 
 export default function Unsubscribe() {
   const topicsRef = useRef(null);
@@ -55,44 +56,49 @@ export default function Unsubscribe() {
   };
 
   return (
-    <main className="main-wrapper">
-      <h1 className="title">Newsletter</h1>
-      <p className="text--big">
-        The newsletter comes from the following topics:
-      </p>
-      <ul className="text--big">
-        {newsletterTopics.map((topic) => (
-          <li key={topic}> {topic} </li>
-        ))}
-      </ul>
-      {selectTopicOpt === true ? (
-        <>
-          <TextArea
-            label="What topics do you want to unsubscribe from?"
-            placeholder="Add newsletter topic separated by a comma. E.g. books,dune,sci-fi"
-            myRef={topicsRef}
-          />
-          <LargeButton type={"button"} onClick={handleUnsubscribe}>
-            Unsubscribe
-          </LargeButton>
-          <LargeButton type={"button"} onClick={changeselectTopicOpt}>
-            Go Back
-          </LargeButton>
-        </>
-      ) : (
-        <>
-          <p className="text--big">
-            Do you wish to unsubscribe from a particular topic or from all of
-            our newsletters:
-          </p>
-          <LargeButton type={"button"} onClick={changeselectTopicOpt}>
-            Unsubscribe from certain topics
-          </LargeButton>
-          <LargeButton type={"button"} onClick={handleUnsubscribe}>
-            Unsubscribe from All
-          </LargeButton>
-        </>
-      )}
-    </main>
+    <>
+      <Head>
+        <title>Unsubscribe</title>
+      </Head>
+      <main className="main-wrapper">
+        <h1 className="title">Newsletter</h1>
+        <p className="text--big">
+          The newsletter comes from the following topics:
+        </p>
+        <ul className="text--big">
+          {newsletterTopics.map((topic) => (
+            <li key={topic}> {topic} </li>
+          ))}
+        </ul>
+        {selectTopicOpt === true ? (
+          <>
+            <TextArea
+              label="What topics do you want to unsubscribe from?"
+              placeholder="Add newsletter topic separated by a comma. E.g. books,dune,sci-fi"
+              myRef={topicsRef}
+            />
+            <LargeButton type={"button"} onClick={handleUnsubscribe}>
+              Unsubscribe
+            </LargeButton>
+            <LargeButton type={"button"} onClick={changeselectTopicOpt}>
+              Go Back
+            </LargeButton>
+          </>
+        ) : (
+          <>
+            <p className="text--big">
+              Do you wish to unsubscribe from a particular topic or from all of
+              our newsletters:
+            </p>
+            <LargeButton type={"button"} onClick={changeselectTopicOpt}>
+              Unsubscribe from certain topics
+            </LargeButton>
+            <LargeButton type={"button"} onClick={handleUnsubscribe}>
+              Unsubscribe from All
+            </LargeButton>
+          </>
+        )}
+      </main>
+    </>
   );
 }

@@ -7,7 +7,7 @@ export default class RecipientsService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: `http://localhost:8000/${mail}/recipients`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/${mail}/recipients`,
     });
   }
 
@@ -17,7 +17,7 @@ export default class RecipientsService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: `http://localhost:8000/${mail}/recipients/create-list/`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/${mail}/recipients/create-list/`,
       data: data,
     });
   }
@@ -28,7 +28,7 @@ export default class RecipientsService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: `http://localhost:8000/${mail}/recipients/add-recipient/${recipient}`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/${mail}/recipients/add-recipient/${recipient}`,
     });
   }
 
@@ -38,7 +38,7 @@ export default class RecipientsService {
       headers: {
         "Content-Type": "application/json",
       },
-      url: `http://localhost:8000/${sender}/recipients/${recipient}/unsub`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/${sender}/recipients/${recipient}/unsub`,
       data: data,
     });
   }
