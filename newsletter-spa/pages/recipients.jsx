@@ -81,7 +81,7 @@ export default function Recipients() {
               placeholder="Add one e-mail for a new recipient"
               myRef={newRecipientsRef}
             />
-            <LargeButton onClick={handleAddRecipient}>
+            <LargeButton type={"button"} onClick={handleAddRecipient}>
               Add a recipients
             </LargeButton>
           </>
@@ -93,7 +93,7 @@ export default function Recipients() {
               placeholder="Add e-mails separated by a comma. E.g. a@mail.com,b@mail.com"
               myRef={recipientsListRef}
             />
-            <LargeButton onClick={handleCreateList}>
+            <LargeButton type={"button"} onClick={handleCreateList}>
               Create a recipients list
             </LargeButton>
           </>

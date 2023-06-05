@@ -163,6 +163,8 @@ class NewsletterService():
             else:
                 attachments = [file]
             
+            print("Attachment list created")
+
             for recipient in newsletter_subscribed:
                 unsubscribe_url = "/".join([self.domain, sender, recipient, newsletter_id])
                 newsletter_info = {
@@ -170,6 +172,8 @@ class NewsletterService():
                     "body": info,
                     "url": unsubscribe_url
                 }
+
+                print("Newsletter send")
 
                 await self.send_email(
                     subject, 

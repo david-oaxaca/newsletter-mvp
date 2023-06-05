@@ -48,7 +48,9 @@ export default function LogIn() {
         placeholder="Introduce your password"
         myRef={passwordRef}
       />
-      <LargeButton onClick={handleClick}>Log In</LargeButton>
+      <LargeButton type={"button"} onClick={handleClick}>
+        Log In
+      </LargeButton>
 
       <div className="sign-up-section">
         <h2>You don&apos;t have an account?</h2>

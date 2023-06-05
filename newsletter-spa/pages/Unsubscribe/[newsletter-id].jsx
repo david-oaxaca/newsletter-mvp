@@ -35,8 +35,12 @@ export default function Unsubscribe() {
             placeholder="Add newsletter topic separated by a comma. E.g. books,dune,sci-fi"
             onChange={handleTextAreaChange}
           />
-          <LargeButton onClick={handleClick}>Unsubscribe</LargeButton>
-          <LargeButton onClick={changeSelectTopic}>Go Back</LargeButton>
+          <LargeButton type={"button"} onClick={handleClick}>
+            Unsubscribe
+          </LargeButton>
+          <LargeButton type={"button"} onClick={changeSelectTopic}>
+            Go Back
+          </LargeButton>
         </>
       ) : (
         <>
@@ -44,10 +48,12 @@ export default function Unsubscribe() {
             Do you wish to unsubscribe from a particular topic or from all of
             our newsletters:
           </p>
-          <LargeButton onClick={changeSelectTopic}>
+          <LargeButton type={"button"} onClick={changeSelectTopic}>
             Unsubscribe from certain topics
           </LargeButton>
-          <LargeButton onClick={handleClick}>Unsubscribe from All</LargeButton>
+          <LargeButton type={"button"} onClick={handleClick}>
+            Unsubscribe from All
+          </LargeButton>
         </>
       )}
     </main>

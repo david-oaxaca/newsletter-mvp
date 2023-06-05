@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useRef, useState } from "react";
 import UploadButton from "../Buttons/UploadButton";
 
-const FileUpload = ({ onFileUploaded }) => {
+const FileUpload = ({ onFileUploaded, myRef }) => {
   const [fileName, getFileName] = useState("");
-  const hiddenFileInput = React.useRef(null);
+
   const handleClick = (event) => {
-    hiddenFileInput.current.click();
+    myRef.current.click();
   };
   const handleChange = (event) => {
     const fileUploaded = event.target.files[0];
@@ -21,7 +21,12 @@ const FileUpload = ({ onFileUploaded }) => {
         </span>
       </div>
       <UploadButton onClick={handleClick}>Select a file </UploadButton>
-      <input type="file" ref={hiddenFileInput} onChange={handleChange} />
+      <input
+        type="file"
+        ref={myRef}
+        onChange={handleChange}
+        accept=".pdf,.png"
+      />
       <label className="text--big">
         {fileName === "" ? null : `Selected file: ${fileName}`}
       </label>

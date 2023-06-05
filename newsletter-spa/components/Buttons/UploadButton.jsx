@@ -3,7 +3,11 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 const UploadButton = ({ children, onClick }) => {
   return (
-    <button className="button button--upload button-text" onClick={onClick}>
+    <button
+      type="button"
+      className="button button--upload button-text"
+      onClick={onClick}
+    >
       <FileUploadIcon sx={{ fontSize: 40 }} />
       {children}
     </button>

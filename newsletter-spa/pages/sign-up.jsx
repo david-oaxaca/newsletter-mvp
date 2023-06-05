@@ -61,7 +61,9 @@ export default function SignUp() {
           placeholder="Confirm your password"
           myRef={confirmPasswordRef}
         />
-        <LargeButton onClick={handleClick}>Sign Up</LargeButton>
+        <LargeButton type={"button"} onClick={handleClick}>
+          Sign Up
+        </LargeButton>
       </main>
     </>
   );
