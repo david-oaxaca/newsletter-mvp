@@ -9,7 +9,7 @@ export default function Header() {
           <h1>Newsletter</h1>
           <ul>
             <li>
-              <Link className="nav-link text--big" href="/">
+              <Link className="nav-link text--big" href="/newsletter">
                 Home
               </Link>
             </li>

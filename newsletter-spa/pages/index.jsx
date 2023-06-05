@@ -22,15 +22,10 @@ export default function LogIn() {
       };
       UserService.logIn(data)
         .then((res) => {
-          if (res.status === 400) {
-            console.log(res.detail);
-            alert(res.detail);
-          } else {
-            console.log(res);
-            alert("Log In successfuly");
-            cookies.set("user_mail", res.user_mail);
-            router.push("/newsletter");
-          }
+          console.log(res);
+          alert(res.message);
+          cookies.set("user_mail", res.user_mail);
+          router.push("/newsletter");
         })
         .catch((e) => console.error(e));
     } else {

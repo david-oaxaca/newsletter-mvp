@@ -6,4 +6,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .redirect-link {
+    color: var(--neutral-600);
+    font-weight: map-get($fontWeights, "semibold");
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--neutral-500);
+    }
+  }
 }

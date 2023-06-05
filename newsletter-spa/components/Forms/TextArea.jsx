@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const TextArea = ({ label, placeholder, onChange }) => {
+const TextArea = ({ label, placeholder, onChange, myRef }) => {
   return (
     <label className="label-wrapper">
       <span className="input-label text--big">{label}</span>
@@ -8,11 +8,21 @@ const TextArea = ({ label, placeholder, onChange }) => {
         className="textarea input-text"
         placeholder={placeholder}
         onChange={onChange}
-        cols={1}
-        rows={1}
+        ref={myRef}
       />
     </label>
   );
+};
+
+TextArea.propTypes = {
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  ref: PropTypes.func,
+};
+
+TextArea.defaultProps = {
+  label: "label",
+  placeholder: "input text",
 };
 
 export default TextArea;

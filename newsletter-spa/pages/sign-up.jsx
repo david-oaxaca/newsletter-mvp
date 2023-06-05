@@ -27,12 +27,8 @@ export default function SignUp() {
       };
       UserService.registerUser(data)
         .then((res) => {
-          if (res.status == 404 || res.status == 400 || res.status == 422) {
-            console.log(res.detail);
-          } else {
-            alert("User registered successfuly");
-            router.push("/");
-          }
+          alert(res.message);
+          router.push("/");
         })
         .catch((e) => console.error(e));
     } else {
