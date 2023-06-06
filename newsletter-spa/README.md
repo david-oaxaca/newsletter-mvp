@@ -1,6 +1,6 @@
 # Newsletter - Single Page Application
 
-This is the SPA built for the project using Next.js and JavaScript.
+This is the SPA built for the project using Next.js and JavaScript. The initial design made in figma can be seen in the following [link](https://www.figma.com/file/SDD1ScI2e0dKprSppGFESm/Newsletter?type=design&node-id=7-325). 
 
 ## 💻 Installation
 
