@@ -37,6 +37,13 @@ More information can be found in the "newsletter-spa" README.md
 
 More information can be found in the "newsletter-api" README.md
 
+## 💻 Proposed deployment in AWS
+
+One of the improvements that this MVP could have in the future, is a deployment in the cloud.
+The following image is the proposed architecture to deploy this project as a three tier architecture:
+
+![AWS Architecture](/markdown-assets/proposed_architecture.jpg)
+
 ## ℹ️ License
 
 [MIT](https://choosealicense.com/licenses/mit/)
