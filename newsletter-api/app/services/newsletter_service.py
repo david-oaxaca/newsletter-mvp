@@ -14,6 +14,9 @@ load_dotenv('.env')
 class NewsletterService():
     
     def __init__(self) -> None:
+        """
+        Initialize the variables conf and domain on the constructor
+        """
         CURR_DIR = Path(__file__).resolve().parent
         self.conf = ConnectionConfig(
             MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
@@ -30,6 +33,9 @@ class NewsletterService():
         self.domain = os.getenv('DOMAIN')
 
     def retrieve_subscribed(self, email: str, topics: list) -> list:
+        """
+        Retrieve all users that aren't unsubscribe to any topic related of the newsletter
+        """
         try:
             document_query = collection.find_one(
                 {"email": email}, 
@@ -56,6 +62,9 @@ class NewsletterService():
             print(str(e))
     
     def register_newletter(self, email: str, topics: list) -> str:
+        """
+        Create an unique ID for the newsletter and store it along it's topics in the db
+        """
         try:
             newsletter_id = str(uuid.uuid4())
 
@@ -87,6 +96,9 @@ class NewsletterService():
             print(str(e))
 
     def retrieve_newletter(self, email: str, newsletter_id: str) -> dict:
+        """
+        Retrieve topics of a newsletter with a passed id
+        """
         try:
             document_query = collection.find_one(
                 {"email": email}, 
@@ -109,6 +121,9 @@ class NewsletterService():
             original_name: str, 
             pdf_name: str
     ) -> list[UploadFile]:
+        """
+        Create a pdf and png UploadFile objects with the bytes passes 
+        """
         try:
             original_file = UploadFile(file=BytesIO(image_bytes), filename=original_name)
             image = Image.open(BytesIO(image_bytes))
@@ -131,6 +146,9 @@ class NewsletterService():
             body: dict, 
             attachments: list[UploadFile]
     ):
+        """
+        Send an e-mail using the library FastAPI-mail
+        """
         try:
             message = MessageSchema(
                 subject=subject,
@@ -155,12 +173,21 @@ class NewsletterService():
             file_type: str,
             file: UploadFile
     ) -> dict:
+        """
+        Orchestration function that will register the newsletter in the db, create the needed UploadFiles and send the e-mail to the subscribed recipients.
+        """
         try:
+            # Retrieval of subscribed recipients
             newsletter_subscribed = self.retrieve_subscribed(sender, topics)
+
+            # Creation of a newsletter ID 
             newsletter_id = self.register_newletter(sender, topics)
+
+            # Pass the recieved file to bytes
             file_bytes = await file.read()
 
             for recipient in newsletter_subscribed:
+                # Creation of link that will passed to html template so the recipient can unsubscribe
                 unsubscribe_url = "/".join([
                     self.domain, 
                     "unsubscribe", 
@@ -174,6 +201,7 @@ class NewsletterService():
                     "url": unsubscribe_url
                 }
 
+                # Creation of UploadFile objects to each recipient, due to closing of files and e-mail sending
                 if file_type == 'image/png' or file_type == 'image/jpeg':
                     file_name = file.filename.split(".")[0]
                     attachments = await self.create_pdf_and_img(

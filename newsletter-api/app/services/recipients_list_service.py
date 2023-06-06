@@ -8,6 +8,9 @@ class RecipientsListService():
         pass
 
     def get_recipients(self, email: str) -> recipients_list_entity:
+        """
+        Retrieval of the recipients and their unsubscription list of the admin
+        """
         try:
             document_query = collection.find_one(
                 {"email": email}, 
@@ -24,6 +27,9 @@ class RecipientsListService():
             return {"error": "Recipients list wasn't found."}
         
     def update_recipients_list(self, email: str, recipients: list) -> bool:
+        """
+        General function to update the recipients list attribute of the user document
+        """
         try:
             filter_query = {"email": email}
             update_query = {"$set": {"recipients_list": recipients}}
@@ -34,6 +40,10 @@ class RecipientsListService():
             return False
     
     def create_new_recipients_list(self, email: str, recipients_list: RecipientsList) -> dict:
+        """
+        Function to add unsubscription lists and call update function to add the recipients list.
+        Will add unsubscription list to all passed recipients. All start with 'none', as they not have unsubscribed yet.
+        """
         try:
             if not collection.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
@@ -53,6 +63,9 @@ class RecipientsListService():
             return {"error": "Recipients lists couldn't be created." }
         
     def add_new_recipient(self, email: str, new_recipient: str) -> dict:
+        """
+        Retrieves the recipients list and add a new recipient and their unsubscription list by calling update_recipients_list().
+        """
         try:
             if not collection.find_one({"email": email}):
                 raise Exception("User doesn't exists in the database")
