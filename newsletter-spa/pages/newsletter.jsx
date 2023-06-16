@@ -48,7 +48,6 @@ export default function Newsletter() {
     data.append("title", titleRef.current.value);
     data.append("body", bodyRef.current.value);
     data.append("topics", topicsRef.current.value);
-
     NewsletterService.publishNewsletter(mail, data)
       .then((res) => {
         console.log(res);

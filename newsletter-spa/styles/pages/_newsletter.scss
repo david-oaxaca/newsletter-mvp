@@ -6,6 +6,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+
+  @include mediaQuery("tablet") {
+    padding: 2rem;
+  }
+
+  @include mediaQuery("mobile") {
+    padding: 2rem;
+  }
 
   .redirect-link {
     color: var(--neutral-600);

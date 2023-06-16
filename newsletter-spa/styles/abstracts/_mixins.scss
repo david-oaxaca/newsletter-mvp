@@ -1,9 +1,9 @@
-@use "_breakpoints" as *;
+@use "breakpoints" as *;
 
 @mixin mediaQuery($key) {
   $size: map-get($breakpoint, $key);
 
-  @media only screen and (mind-width: $size) {
+  @media only screen and (max-width: $size) {
     @content;
   }
 }

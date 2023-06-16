@@ -5,6 +5,8 @@ services:
     build:
       context: ./newsletter-spa
       dockerfile: DockerFile
+    volumes:
+      - ./newsletter-spa:/code
     depends_on:
       - api
     ports:
@@ -13,6 +15,8 @@ services:
     build:
       context: ./newsletter-api
       dockerfile: DockerFile
+    volumes:
+      - ./newsletter-api/app:/code/app
     depends_on:
       - db
     ports:

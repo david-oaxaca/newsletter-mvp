@@ -23,10 +23,14 @@ export default function LogIn() {
       };
       UserService.logIn(data)
         .then((res) => {
-          console.log(res);
-          alert(res.message);
-          cookies.set("user_mail", res.user_mail);
-          router.push("/newsletter");
+          if (res.status === 400 || res.status === 404) {
+            alert("Error, user wasn't found");
+          } else {
+            console.log(res);
+            alert(res.message);
+            cookies.set("user_mail", res.user_mail);
+            router.push("/newsletter");
+          }
         })
         .catch((e) => console.error(e));
     } else {
